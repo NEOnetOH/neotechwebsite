@@ -66,48 +66,7 @@
 
 <body class="flex flex-col min-h-screen">
 
-    <!-- Navigation Header -->
-    <header class="bg-neo-blue text-white sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between md:justify-end h-20">
-                
-                <!-- Mobile Hamburger Button (Aligned Left) -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-neo-light-blue focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <!-- Icon when menu is closed -->
-                        <svg id="menu-icon-closed" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                        <!-- Icon when menu is open -->
-                        <svg id="menu-icon-open" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Desktop Navigation Links (Aligned Right) -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="../" class="font-body text-lg font-medium hover:text-[#E9BE5A] transition-all-200">Home</a>
-                    <a href="../robotics-competition/" class="font-body text-lg font-medium hover:text-[#E9BE5A] transition-all-200">Robotics Competition</a>
-                    <a href="../sponsors/" class="font-body text-lg font-medium hover:text-[#E9BE5A] transition-all-200">Sponsors</a>
-                    <a href="../more-pd/" class="font-body text-lg font-medium hover:text-[#E9BE5A] transition-all-200">More PD</a>
-                    <a href="../faq/" class="font-body text-lg font-medium hover:text-[#E9BE5A] transition-all-200">FAQ</a>
-                </nav>
-            </div>
-        </div>
-
-        <!-- Mobile Navigation Drawer (Aligned Left) -->
-        <div id="mobile-menu" class="md:hidden bg-neo-blue border-t border-neo-light-blue">
-            <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col items-start">
-                <a href="../" class="font-body text-lg py-2 font-medium hover:text-[#E9BE5A] transition-all-200">Home</a>
-                <a href="../robotics-competition/" class="font-body text-lg py-2 font-medium hover:text-[#E9BE5A] transition-all-200">Robotics Competition</a>
-                <a href="../sponsors/" class="font-body text-lg py-2 font-medium hover:text-[#E9BE5A] transition-all-200">Sponsors</a>
-                <a href="../more-pd/" class="font-body text-lg py-2 font-medium hover:text-[#E9BE5A] transition-all-200">More PD</a>
-                <a href="../faq/" class="font-body text-lg py-2 font-medium hover:text-[#E9BE5A] transition-all-200">FAQ</a>
-            </div>
-        </div>
-    </header>
+    <div id="navbar"></div>
 
     <main class="flex-grow">
         <div class="relative overflow-hidden min-h-[85vh] flex items-center py-16 md:py-24 hero-overlay">
@@ -203,32 +162,37 @@
         </div>
     </footer>
 
-    <!-- Script to handle mobile menu toggling -->
+    <!-- Unified Nav Fetch & Mobile Menu Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('mobile-menu-button');
-            const menu = document.getElementById('mobile-menu');
-            const iconClosed = document.getElementById('menu-icon-closed');
-            const iconOpen = document.getElementById('menu-icon-open');
+        fetch('/nav.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load nav.html');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                
+                // Re-initialize mobile menu toggle listeners after dynamic insertion
+                const btn = document.getElementById('mobile-menu-button');
+                const menu = document.getElementById('mobile-menu');
+                const iconClosed = document.getElementById('menu-icon-closed');
+                const iconOpen = document.getElementById('menu-icon-open');
 
-            if (btn && menu) {
-                btn.addEventListener('click', () => {
-                    const expanded = btn.getAttribute('aria-expanded') === 'true';
-                    
-                    // Toggle accessibility state
-                    btn.setAttribute('aria-expanded', !expanded);
-                    
-                    // Toggle visibility
-                    menu.classList.toggle('open');
-                    
-                    // Toggle icons
-                    iconClosed.classList.toggle('hidden');
-                    iconClosed.classList.toggle('block');
-                    iconOpen.classList.toggle('hidden');
-                    iconOpen.classList.toggle('block');
-                });
-            }
-        });
+                if (btn && menu) {
+                    btn.addEventListener('click', () => {
+                        const expanded = btn.getAttribute('aria-expanded') === 'true';
+                        btn.setAttribute('aria-expanded', !expanded);
+                        menu.classList.toggle('open');
+                        iconClosed.classList.toggle('hidden');
+                        iconClosed.classList.toggle('block');
+                        iconOpen.classList.toggle('hidden');
+                        iconOpen.classList.toggle('block');
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading navigation:', error));
     </script>
 </body>
 </html>
