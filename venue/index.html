@@ -65,14 +65,22 @@
                 </div>
 
                 <!-- Google Map Embedding -->
-                <div class="w-full h-[450px] rounded-3xl overflow-hidden shadow-lg border-2 border-gray-100">
+                <div class="relative w-full h-[450px] rounded-3xl overflow-hidden shadow-lg border-2 border-gray-100 bg-slate-100">
+                    <div id="map-loader" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 z-10 transition-opacity duration-500">
+                        <svg class="animate-spin h-10 w-10 text-neo-blue mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-500">Loading map...</span>
+                    </div>
                     <iframe 
                         title="Kent State Student Center Location"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3003.58238101683!2d-81.34444!3d41.14488!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8831252f53d2562d%3A0xb3f566dd26e8494!2s1075%20Risman%20Dr%2C%20Kent%2C%20OH%2044242!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
-                        class="w-full h-full border-0" 
+                        class="w-full h-full border-0 relative z-0" 
                         allowfullscreen="" 
                         loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
+                        referrerpolicy="no-referrer-when-downgrade"
+                        onload="hideMapLoader()">
                     </iframe>
                 </div>
             </div>
@@ -98,7 +106,7 @@
                                     Primary Parking (Validated)
                                 </h3>
                                 <p class="text-gray-700 text-base md:text-lg leading-relaxed">
-                                    Please park in the <strong class="text-gray-900">Student Center Visitor Lot</strong> directly in front of the Kiva Auditorium off of Risman Dr. Parking validation will be provided.
+                                    Please park in the <strong class="text-gray-900">Student Center Visitor Lot</strong> directly in front of the Kiva Auditorium off of Risman Dr. Parking validation will be provided when you check in for the conference.
                                 </p>
                             </div>
 
@@ -207,6 +215,18 @@
         </div>
     </div>
 </footer>
+
+<script>
+    function hideMapLoader() {
+        const loader = document.getElementById('map-loader');
+        if (loader) {
+            loader.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                loader.remove();
+            }, 500);
+        }
+    }
+</script>
 
 <!-- Unified Nav Fetch & Mobile Menu Script -->
 <script>
