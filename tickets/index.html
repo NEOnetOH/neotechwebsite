@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets | NEOTech 2027</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neo-blue': '#063672',
+                        'neo-gold': '#E9BE5A',
+                        'neo-light-blue': '#1e5296',
+                    },
+                    fontFamily: {
+                        'title': ['Lilita One', 'Roboto', 'sans-serif'],
+                        'body': ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+
+<div id="navbar"></div>
+
+<main class="flex-grow">
+    <!-- Hero Banner Section -->
+    <div class="bg-neo-blue py-16 lg:py-24 border-b-8 border-neo-gold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <a href="../">
+                <img src="../images/neotech27whitelogo.svg" 
+                     alt="Neotech Logo" 
+                     class="mx-auto mb-6 h-16 w-auto" 
+                />
+            </a>
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl text-white font-title tracking-wide mb-4">
+                Tickets
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-200 leading-relaxed font-body">
+                Reserve your spot for NEOTech 2027 on March 16, 2027 at the Kent State University Student Center.
+            </p>
+        </div>
+    </div>
+
+    <!-- Ticket Registration Section -->
+    <section class="py-12 lg:py-16 bg-slate-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Standalone Registration Button (Above Form) -->
+            <div class="text-center mb-8">
+                <a href="https://whova.com/portal/registration/TF3Jne9lzlkK3WkLMZmW/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-3 bg-neo-gold text-neo-blue px-7 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-neo-blue shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
+                    <span>Open Ticket Registration in New Tab</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-base"></i>
+                </a>
+            </div>
+
+            <!-- Whova Registration Widget Box -->
+            <div class="whova-widget-container">
+                <div id="whova-regform-widget" data-reactroot=""></div>
+                <div id="whova-regform-seo-widget" data-reactroot="" class="mt-8 pt-5 border-t border-slate-200 text-center text-xs text-slate-500 leading-relaxed">
+                    Powered By <a class="brandlink text-neo-blue hover:text-neo-gold hover:underline transition-colors" target="_blank" href="https://whova.com/"><b>Whova</b></a>
+                    <br/>
+                    <a class="brandanchorlink text-neo-blue hover:text-neo-gold hover:underline transition-colors" target="_blank" href="https://whova.com/event-registration-software/">Conference registration system</a>
+                </div>
+                <script src="https://whova.com/static/frontend/xems/js/whova-regform-widget.js?eid=TF3Jne9lzlkK3WkLMZmW&amp;host=https://whova.com&amp;registration=attendee&amp;regpagetoken=" type="text/javascript" id="whova-embeded-regform-script" data-reactroot=""></script>
+            </div>
+
+            <!-- Bottom helper link -->
+            <div class="text-center mt-6">
+                <p class="text-sm text-gray-500">
+                    Having trouble viewing the registration form? 
+                    <a href="https://whova.com/portal/registration/TF3Jne9lzlkK3WkLMZmW/" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="text-neo-blue underline font-medium hover:text-neo-light-blue ml-1">
+                        Click here to launch ticket registration directly
+                    </a>.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="footer"></div>
+
+<script>
+    fetch('/nav.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load nav.html');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+            
+            // Re-initialize mobile menu toggle listeners after dynamic insertion
+            const btn = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+            const iconClosed = document.getElementById('menu-icon-closed');
+            const iconOpen = document.getElementById('menu-icon-open');
+
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    const expanded = btn.getAttribute('aria-expanded') === 'true';
+                    btn.setAttribute('aria-expanded', !expanded);
+                    menu.classList.toggle('open');
+                    iconClosed.classList.toggle('hidden');
+                    iconClosed.classList.toggle('block');
+                    iconOpen.classList.toggle('hidden');
+                    iconOpen.classList.toggle('block');
+                });
+            }
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+
+    fetch('/footer.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load footer.html');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading footer:', error));
+</script>
+</body>
+</html>
